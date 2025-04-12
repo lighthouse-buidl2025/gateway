@@ -25,6 +25,7 @@ router.get("/persona-engine/update/:address", async (req, res) => {
 // persona-engine 캐시 분석
 router.get("/persona-engine/wallet/:address", async (req, res) => {
   const { address } = req.params;
+  console.log(address, `${config.personaEngineUrl}/wallet/${address}`);
   try {
     const { data } = await axios.get(
       `${config.personaEngineUrl}/wallet/${address}`
