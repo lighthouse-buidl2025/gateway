@@ -88,6 +88,20 @@ router.get("/persona-engine/category/:group", async (req, res) => {
   }
 });
 
+// 페르소나 그룹별 평균 수치 조회
+router.get("/persona-engine/average/:group", async (req, res) => {
+  const { group } = req.params;
+
+  try {
+    let url = `${config.personaEngineUrl}/average/${group}`;
+
+    const { data } = await axios.get(url);
+    res.json(data);
+  } catch (err: any) {
+    res.status(502).json({ error: "Failed to reach persona-engine (wallet)" });
+  }
+});
+
 // ===============================
 // User Module API
 // ===============================
