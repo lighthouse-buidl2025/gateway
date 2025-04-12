@@ -214,4 +214,40 @@ router.get("/tx-agent/getRules/:address", async (req, res) => {
   }
 });
 
+// ===============================
+// Eliza Agent API
+// ===============================
+router.get("/eliza-agent/agents", async (req, res) => {
+  try {
+    const { data } = await axios.get(`${config.elizaAgentUrl}/agents`);
+    res.json({
+      success: true,
+      data,
+    });
+  } catch (err: any) {
+    console.error("[GW:eliza-agent/agent]", err.message);
+    res
+      .status(502)
+      .json({ success: false, message: "Failed to reach eliza-agent (agent)" });
+  }
+});
+
+router.post("/eliza-agent/:agentId/message", async (req, res) => {
+  try {
+    const { data } = await axios.post(
+      `${config.elizaAgentUrl}/${req.params.agentId}/message`,
+      req.body
+    );
+    res.json({
+      success: true,
+      data,
+    });
+  } catch (err: any) {
+    console.error("[GW:eliza-agent/agent]", err.message);
+    res
+      .status(502)
+      .json({ success: false, message: "Failed to reach eliza-agent (agent)" });
+  }
+});
+
 export default router;
