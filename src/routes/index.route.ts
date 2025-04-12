@@ -8,7 +8,11 @@ router.get('/ping', (req, res) => {
   res.status(200).json({ message: 'pong' });
 });
 
+// ===============================
 // Persona Engine API
+// ===============================
+
+// persona-engine 사용자 조회
 router.get('/persona-engine/update/:address', async (req, res) => {
   const { address } = req.params;
   try {
@@ -30,13 +34,35 @@ router.get('/persona-engine/wallet/:address', async (req, res) => {
   }
 });
 
+// 페르소나 그룹별 가장 많이 상호작용한 컨트랙트 조회
+router.get('/persona-engine/category/:group', async (req, res) => {
+  const { group } = req.params;
+  const { limit } = req.query;
+
+  try {
+    const url = `${config.personaEngineUrl}/category/${group}`;
+    const { data } = await axios.get(url, {
+      params: { limit },
+    });
+    res.json(data);
+  } catch (err: any) {
+    console.error('[GW:persona-engine/category]', err.message);
+    res.status(502).json({ error: 'Failed to reach persona-engine (category)' });
+  }
+});
+
+// ===============================
 // User Module API
+// ===============================
 // 유저 조회
 router.get('/user/:address', async (req, res) => {
   try {
     const { data } = await axios.get(`${config.userModuleUrl}/${req.params.address}`);
     res.json(data);
   } catch (err: any) {
+    if (err.response && err.response.status === 404) {
+      res.status(404).json({ success: false, message: 'User not found' });
+    }
     console.error('[GW:user/:address]', err.message);
     res.status(502).json({ success: false, message: 'User module 연결 실패' });
   }
