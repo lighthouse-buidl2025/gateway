@@ -103,4 +103,25 @@ router.get("/persona-engine/logs/:address", async (req, res) => {
   }
 });
 
+// persona-engine 캐시 분석
+router.get("/persona-engine/category/:group", async (req, res) => {
+  const { group } = req.params;
+  const { limit, address } = req.query;
+  try {
+    let url = `${config.personaEngineUrl}/category/${group}`;
+
+    if (limit || address) {
+      url += "?";
+      if (limit) url += `limit=${limit}`;
+      if (limit && address) url += "&";
+      if (address) url += `address=${address}`;
+    }
+
+    const { data } = await axios.get(url);
+    res.json(data);
+  } catch (err: any) {
+    res.status(502).json({ error: "Failed to reach persona-engine (wallet)" });
+  }
+});
+
 export default router;
