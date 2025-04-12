@@ -35,24 +35,24 @@ router.get("/persona-engine/wallet/:address", async (req, res) => {
   }
 });
 
-// 페르소나 그룹별 가장 많이 상호작용한 컨트랙트 조회
-router.get("/persona-engine/category/:group", async (req, res) => {
-  const { group } = req.params;
-  const { limit } = req.query;
+// // 페르소나 그룹별 가장 많이 상호작용한 컨트랙트 조회
+// router.get("/persona-engine/category/:group", async (req, res) => {
+//   const { group } = req.params;
+//   const { limit } = req.query;
 
-  try {
-    const url = `${config.personaEngineUrl}/category/${group}`;
-    const { data } = await axios.get(url, {
-      params: { limit },
-    });
-    res.json(data);
-  } catch (err: any) {
-    console.error("[GW:persona-engine/category]", err.message);
-    res
-      .status(502)
-      .json({ error: "Failed to reach persona-engine (category)" });
-  }
-});
+//   try {
+//     const url = `${config.personaEngineUrl}/category/${group}`;
+//     const { data } = await axios.get(url, {
+//       params: { limit },
+//     });
+//     res.json(data);
+//   } catch (err: any) {
+//     console.error("[GW:persona-engine/category]", err.message);
+//     res
+//       .status(502)
+//       .json({ error: "Failed to reach persona-engine (category)" });
+//   }
+// });
 
 // persona-engine 캐시 분석
 router.get("/persona-engine/logs/:address", async (req, res) => {
@@ -67,7 +67,7 @@ router.get("/persona-engine/logs/:address", async (req, res) => {
   }
 });
 
-// persona-engine 캐시 분석
+// 페르소나 그룹별 가장 많이 상호작용한 컨트랙트 조회
 router.get("/persona-engine/category/:group", async (req, res) => {
   const { group } = req.params;
   const { limit, address } = req.query;
