@@ -107,4 +107,58 @@ router.post('/user/telegram/:address', async (req, res) => {
   }
 });
 
+// ===============================
+// Tx Agent API
+// ===============================
+router.get('/tx-agent/agent', async (req, res) => {
+  try {
+    const { data } = await axios.get(`${config.txAgentModuleUrl}/agent`);
+    res.json(data);
+  } catch (err: any) {
+    console.error('[GW:tx-agent/agent]', err.message);
+    res.status(502).json({ error: 'Failed to reach tx-agent (agent)' });
+  }
+});
+
+router.post('/tx-agent/createAccount', async (req, res) => {
+  try {
+    const { data } = await axios.post(`${config.txAgentModuleUrl}/createAccount`, req.body);
+    res.status(201).json(data);
+  } catch (err: any) {
+    console.error('[GW:tx-agent/createAccount]', err.message);
+    res.status(502).json({ error: 'Failed to reach tx-agent (createAccount)' });
+  }
+});
+
+router.post('/tx-agent/executeTransaction', async (req, res) => {
+  try {
+    const { data } = await axios.post(`${config.txAgentModuleUrl}/executeTransaction`, req.body);
+    res.json(data);
+  } catch (err: any) {
+    console.error('[GW:tx-agent/executeTransaction]', err.message);
+    res.status(502).json({ error: 'Failed to reach tx-agent (executeTransaction)' });
+  }
+});
+
+router.post('/tx-agent/createAgentRule', async (req, res) => {
+  try {
+    const { data } = await axios.post(`${config.txAgentModuleUrl}/createAgentRule`, req.body);
+    res.status(201).json(data);
+  } catch (err: any) {
+    console.error('[GW:tx-agent/createAgentRule]', err.message);
+    res.status(502).json({ error: 'Failed to reach tx-agent (createAgentRule)' });
+  }
+});
+
+router.get('/tx-agent/getRules/:address', async (req, res) => {
+  try {
+    const { data } = await axios.get(`${config.txAgentModuleUrl}/getRules/${req.params.address}`);
+    res.json(data);
+  } catch (err: any) {
+    console.error('[GW:tx-agent/getRules]', err.message);
+    res.status(502).json({ error: 'Failed to reach tx-agent (getRules)' });
+  }
+});
+
+
 export default router;
